@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Records</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #fdfdfd;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .student {
+      background: #f4f4f4;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .student-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      text-align: center;
+      min-width: 120px;
+    }
+    .enrolled {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .not-enrolled {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Student Records</h1>
+  <div id="students"></div>
+
+  <script>
+    fetch('/api/students')
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById('students');
+        data.forEach(s => {
+          const statusClass = s.status === 'enrolled' ? 'enrolled' : 'not-enrolled';
+          container.innerHTML += `
+            <div class="student">
+              <div class="student-header">
+                <div>
+                  <strong>${s.name}</strong> (${s.program})<br>
+                  Email: ${s.email}<br>
+                  Age: ${s.age} | ID: ${s.studentId}
+                </div>
+                <div class="status-badge ${statusClass}">
+                  ${s.status}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+      });
+  </script>
+</body>
+</html>
